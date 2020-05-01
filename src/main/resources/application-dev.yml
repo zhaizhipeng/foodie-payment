@@ -9,7 +9,6 @@ spring:
     database: 0
     host: 192.168.1.64
     port: 6379
-#    password: imooc
 
 # 开发环境 mybatis 打印日志
 mybatis:

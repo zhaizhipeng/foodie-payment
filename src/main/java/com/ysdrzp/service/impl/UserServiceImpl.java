@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService {
 
 	@Autowired
-	private UsersMapper usersMapper;
+	UsersMapper usersMapper;
 
 	@Transactional(propagation=Propagation.SUPPORTS)
 	@Override
