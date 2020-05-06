@@ -19,7 +19,7 @@ public class UserServiceImpl implements UserService {
 	public Users queryUserInfo(String userId, String pwd) {
 
 		Users user = new Users();
-		user.setImoocUserId(userId);
+		user.setUserId(userId);
 		user.setPassword(pwd);
 
 		return usersMapper.selectOne(user);

@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "payment")
 public class PaymentController {
 
-	final static Logger log = LoggerFactory.getLogger(PaymentController.class);
+	final static Logger logger = LoggerFactory.getLogger(PaymentController.class);
 
 	@Autowired
 	public RedisOperator redis;
@@ -58,7 +58,7 @@ public class PaymentController {
 		Integer amount = merchantOrdersBO.getAmount();
 		// 支付方式
 		Integer payMethod = merchantOrdersBO.getPayMethod();
-		// 支付成功后的回调地址（学生自定义）
+		// 支付成功后的回调地址
 		String returnUrl = merchantOrdersBO.getReturnUrl();
 
 		if (StringUtils.isBlank(merchantOrderId)) {
@@ -83,6 +83,8 @@ public class PaymentController {
 		// 保存传来的商户订单信息
 		boolean isSuccess = false;
 		try {
+			logger.info("商户订单信息：{}", merchantOrdersBO);
+			isSuccess = true;
 			isSuccess = paymentOrderService.createPaymentOrder(merchantOrdersBO);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -97,7 +99,7 @@ public class PaymentController {
 	}
 
 	/**
-	 * 提供给大家查询的方法，用于查询订单信息
+	 * 用于查询订单信息
 	 * @param merchantOrderId
 	 * @param merchantUserId
 	 * @return
@@ -157,26 +159,21 @@ public class PaymentController {
 	}
 
 	/**
-	 *
-	 * @Description: 前往支付宝进行支付
+	 * 前往支付宝进行支付
+	 * @param merchantOrderId
+	 * @param merchantUserId
 	 * @return
-	 * @throws Exception
 	 */
 	@ResponseBody
 	@RequestMapping(value="/goAlipay")
-	public YSDRZPJSONResult goAlipay(String merchantOrderId, String merchantUserId) throws Exception{
+	public YSDRZPJSONResult goAlipay(String merchantOrderId, String merchantUserId) {
 
 		// 查询订单详情
 		Orders waitPayOrder = paymentOrderService.queryOrderByStatus(merchantUserId, merchantOrderId, PaymentStatus.WAIT_PAY.type);
 
 		//获得初始化的AlipayClient
-		AlipayClient alipayClient = new DefaultAlipayClient(aliPayResource.getGatewayUrl(),
-															aliPayResource.getAppId(),
-															aliPayResource.getMerchantPrivateKey(),
-															"json",
-															aliPayResource.getCharset(),
-															aliPayResource.getAlipayPublicKey(),
-															aliPayResource.getSignType());
+		AlipayClient alipayClient = new DefaultAlipayClient(aliPayResource.getGatewayUrl(), aliPayResource.getAppId(), aliPayResource.getMerchantPrivateKey(), "json",
+															aliPayResource.getCharset(), aliPayResource.getAlipayPublicKey(), aliPayResource.getSignType());
 
 		//设置请求参数
 		AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();
@@ -187,7 +184,7 @@ public class PaymentController {
 		String out_trade_no = merchantOrderId;
 		// 付款金额, 必填 单位元
 		String total_amount = CurrencyUtils.getFen2YuanWithPoint(waitPayOrder.getAmount());
-//    	String total_amount = "0.01";	// 测试用 1分钱
+        total_amount = "0.01";	// 测试用 1分钱
 		// 订单名称, 必填
 		String subject = "天天吃货-付款用户[" + merchantUserId + "]";
 		// 商品描述, 可空, 目前先用订单名称
@@ -203,16 +200,6 @@ public class PaymentController {
 				+ "\"timeout_express\":\""+ timeout_express +"\","
 				+ "\"product_code\":\"FAST_INSTANT_TRADE_PAY\"}");
 
-		//若想给BizContent增加其他可选请求参数, 以增加自定义超时时间参数timeout_express来举例说明
-		//alipayRequest.setBizContent("{\"out_trade_no\":\""+ out_trade_no +"\","
-		//		+ "\"total_amount\":\""+ total_amount +"\","
-		//		+ "\"subject\":\""+ subject +"\","
-		//		+ "\"body\":\""+ body +"\","
-		//		+ "\"timeout_express\":\"10m\","
-		//		+ "\"product_code\":\"FAST_INSTANT_TRADE_PAY\"}");
-		//请求参数可查阅【电脑网站支付的API文档-alipay.trade.page.pay-请求参数】章节
-
-		//请求
 		String alipayForm = "";
 		try {
 			alipayForm = alipayClient.pageExecute(alipayRequest).getBody();
@@ -220,8 +207,7 @@ public class PaymentController {
 			e.printStackTrace();
 		}
 
-		log.info("支付宝支付 - 前往支付页面, alipayForm: \n{}", alipayForm);
-
+		logger.info("支付宝支付 - 前往支付页面, alipayForm: \n{}", alipayForm);
 		return YSDRZPJSONResult.ok(alipayForm);
 	}
 

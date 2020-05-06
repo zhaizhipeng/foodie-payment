@@ -6,6 +6,8 @@ import com.ysdrzp.utils.DateUtil;
 import com.ysdrzp.utils.JsonUtils;
 import com.ysdrzp.utils.YSDRZPJSONResult;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -18,6 +20,8 @@ import java.util.Date;
 
 public class PayCenterInterceptor implements HandlerInterceptor {
 
+	private static final Logger logger = LoggerFactory.getLogger(PayCenterInterceptor.class);
+
 	@Autowired
 	private UserService userService;
 
@@ -27,7 +31,9 @@ public class PayCenterInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object arg2) throws Exception {
 		String imoocUserId = request.getHeader("imoocUserId");
+		logger.info("imoocUserId:" + imoocUserId);
 		String password = request.getHeader("password");
+		logger.info("password:" + password);
 
 		if (StringUtils.isNotBlank(imoocUserId) && StringUtils.isNotBlank(password)) {
 
@@ -78,7 +84,7 @@ public class PayCenterInterceptor implements HandlerInterceptor {
 	 */
 	@Override
 	public void postHandle(HttpServletRequest arg0, HttpServletResponse arg1, Object arg2, ModelAndView arg3) {
-
+		logger.info("==========postHandle==========");
 	}
 	
 	/**
@@ -86,7 +92,7 @@ public class PayCenterInterceptor implements HandlerInterceptor {
 	 */
 	@Override
 	public void afterCompletion(HttpServletRequest arg0, HttpServletResponse arg1, Object arg2, Exception arg3) {
-
+		logger.info("==========afterCompletion==========");
 	}
 
 }
