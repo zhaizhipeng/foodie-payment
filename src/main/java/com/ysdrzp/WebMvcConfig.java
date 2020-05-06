@@ -23,10 +23,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-
-		registry.addInterceptor(payCenterInterceptor())
-					.addPathPatterns("/payment/*");
-
+		registry.addInterceptor(payCenterInterceptor()).addPathPatterns("/payment/*");
 		WebMvcConfigurer.super.addInterceptors(registry);
 	}
 	

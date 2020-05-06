@@ -11,4 +11,5 @@ public class WarStartApplication extends SpringBootServletInitializer {
     	// 指向Application这个spingboot的启动类
         return builder.sources(Application.class);
     }
+
 }
