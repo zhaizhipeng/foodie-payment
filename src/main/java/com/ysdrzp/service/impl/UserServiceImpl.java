@@ -1,7 +1,7 @@
 package com.ysdrzp.service.impl;
 
 import com.ysdrzp.mapper.UsersMapper;
-import com.ysdrzp.pojo.Users;
+import com.ysdrzp.pojo.model.Users;
 import com.ysdrzp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.ysdrzp.mapper.UsersMapper" >
-  <resultMap id="BaseResultMap" type="com.ysdrzp.pojo.Users" >
-    <!--
-      WARNING - @mbg.generated
-    -->
+  <resultMap id="BaseResultMap" type="com.ysdrzp.pojo.model.Users" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="imooc_user_id" property="imoocUserId" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
     <result column="password" property="password" jdbcType="VARCHAR" />
     <result column="end_date" property="endDate" jdbcType="DATE" />
   </resultMap>

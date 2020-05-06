@@ -1,6 +1,6 @@
 package com.ysdrzp.service;
 
-import com.ysdrzp.pojo.Users;
+import com.ysdrzp.pojo.model.Users;
 
 public interface UserService {
 

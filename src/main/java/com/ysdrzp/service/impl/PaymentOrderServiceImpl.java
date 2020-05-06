@@ -3,7 +3,7 @@ package com.ysdrzp.service.impl;
 import com.ysdrzp.enums.PaymentStatus;
 import com.ysdrzp.enums.YesOrNo;
 import com.ysdrzp.mapper.OrdersMapper;
-import com.ysdrzp.pojo.Orders;
+import com.ysdrzp.pojo.model.Orders;
 import com.ysdrzp.pojo.bo.MerchantOrdersBO;
 import com.ysdrzp.service.PaymentOrderService;
 import org.n3r.idworker.Sid;

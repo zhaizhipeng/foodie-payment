@@ -6,7 +6,7 @@ import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.ysdrzp.enums.PayMethod;
 import com.ysdrzp.enums.PaymentStatus;
-import com.ysdrzp.pojo.Orders;
+import com.ysdrzp.pojo.model.Orders;
 import com.ysdrzp.pojo.bo.MerchantOrdersBO;
 import com.ysdrzp.pojo.vo.PaymentInfoVO;
 import com.ysdrzp.resource.AliPayResource;

@@ -1,4 +1,4 @@
-package com.ysdrzp.pojo;
+package com.ysdrzp.pojo.model;
 
 import lombok.Data;
 

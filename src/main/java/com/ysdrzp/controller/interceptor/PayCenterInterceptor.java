@@ -1,6 +1,6 @@
 package com.ysdrzp.controller.interceptor;
 
-import com.ysdrzp.pojo.Users;
+import com.ysdrzp.pojo.model.Users;
 import com.ysdrzp.service.UserService;
 import com.ysdrzp.utils.DateUtil;
 import com.ysdrzp.utils.JsonUtils;

@@ -1,6 +1,6 @@
 package com.ysdrzp.service;
 
-import com.ysdrzp.pojo.Orders;
+import com.ysdrzp.pojo.model.Orders;
 import com.ysdrzp.pojo.bo.MerchantOrdersBO;
 
 public interface PaymentOrderService {

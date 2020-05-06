@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.ysdrzp.mapper.OrdersMapper" >
-  <resultMap id="BaseResultMap" type="com.ysdrzp.pojo.Orders" >
-    <!--
-      WARNING - @mbg.generated
-    -->
+  <resultMap id="BaseResultMap" type="com.ysdrzp.pojo.model.Orders" >
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="merchant_order_id" property="merchantOrderId" jdbcType="VARCHAR" />
     <result column="merchant_user_id" property="merchantUserId" jdbcType="VARCHAR" />

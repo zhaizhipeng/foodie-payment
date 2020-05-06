@@ -1,41 +1,28 @@
 package com.ysdrzp.pojo.vo;
 
+import lombok.Data;
+
+@Data
 public class PaymentInfoVO {
 
-    private String merchantOrderId;         // 商户订单号
-    private String merchantUserId;          // 商户方的发起用户的用户主键id
-    private Integer amount;                 // 实际支付总金额（包含商户所支付的订单费邮费总额）
-    private String qrCodeUrl;               // 二维码扫码地址
+    /**
+     * 商户订单号
+     */
+    private String merchantOrderId;
 
-    public String getMerchantOrderId() {
-        return merchantOrderId;
-    }
+    /**
+     * 商户方的发起用户的用户主键id
+     */
+    private String merchantUserId;
 
-    public void setMerchantOrderId(String merchantOrderId) {
-        this.merchantOrderId = merchantOrderId;
-    }
+    /**
+     * 实际支付总金额（包含商户所支付的订单费邮费总额）
+     */
+    private Integer amount;
 
-    public String getMerchantUserId() {
-        return merchantUserId;
-    }
+    /**
+     * 二维码扫码地址
+     */
+    private String qrCodeUrl;
 
-    public void setMerchantUserId(String merchantUserId) {
-        this.merchantUserId = merchantUserId;
-    }
-
-    public Integer getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Integer amount) {
-        this.amount = amount;
-    }
-
-    public String getQrCodeUrl() {
-        return qrCodeUrl;
-    }
-
-    public void setQrCodeUrl(String qrCodeUrl) {
-        this.qrCodeUrl = qrCodeUrl;
-    }
 }
