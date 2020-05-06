@@ -18,6 +18,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
 
+/**
+ * 支付中心拦截器
+ */
 public class PayCenterInterceptor implements HandlerInterceptor {
 
 	private static final Logger logger = LoggerFactory.getLogger(PayCenterInterceptor.class);

@@ -5,7 +5,6 @@ import com.ysdrzp.resource.AliPayResource;
 import com.ysdrzp.service.PaymentOrderService;
 import com.ysdrzp.utils.CurrencyUtils;
 import com.ysdrzp.utils.DateUtil;
-import com.ysdrzp.utils.YSDRZPJSONResult;
 import com.ysdrzp.wx.entity.PayResult;
 import com.ysdrzp.wx.service.WxOrderService;
 import org.slf4j.Logger;
@@ -13,7 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +23,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+/**
+ * 支付完成-支付宝回调
+ */
 @RestController
 @RequestMapping(value = "/payment/notice")
 public class NotifyController {
@@ -58,11 +61,12 @@ public class NotifyController {
 		PrintWriter writer = response.getWriter();
 		if (isPaid) {
 
-			String merchantOrderId = payResult.getOut_trade_no();			// 商户订单号
+			// 商户订单号
+			String merchantOrderId = payResult.getOut_trade_no();
+			//
 			String wxFlowId = payResult.getTransaction_id();
+			// 支付金额
 			Integer paidAmount = payResult.getTotal_fee();
-
-//			System.out.println("================================= 支付成功 =================================");
 
 			// ====================== 操作商户自己的业务，比如修改订单状态等 start ==========================
 			String merchantReturnUrl = paymentOrderService.updateOrderPaid(merchantOrderId, paidAmount);
@@ -74,9 +78,8 @@ public class NotifyController {
 			log.info("* 实际支付金额: {}", paidAmount);
 			log.info("*****************************************************************************");
 
-
 			// 通知天天吃货服务端订单已支付
-//			String url = "http://192.168.1.2:8088/orders/notifyMerchantOrderPaid";
+			// String url = "http://192.168.1.2:8088/orders/notifyMerchantOrderPaid";
 
 			MultiValueMap<String, String> requestEntity = new LinkedMultiValueMap<>();
 			requestEntity.add("merchantOrderId", merchantOrderId);
@@ -87,16 +90,13 @@ public class NotifyController {
 			String noticeStr = setXML("SUCCESS", "");
 			writer.write(noticeStr);
 			writer.flush();
-
 		} else {
 			System.out.println("================================= 支付失败 =================================");
-
 			// 支付失败
 			String noticeStr = setXML("FAIL", "");
 			writer.write(noticeStr);
 			writer.flush();
 		}
-
 	}
 
 	public static String setXML(String return_code, String return_msg) {
@@ -115,22 +115,19 @@ public class NotifyController {
 		Map<String,String> params = new HashMap<String,String>();
 		Map<String,String[]> requestParams = request.getParameterMap();
 		for (Iterator<String> iter = requestParams.keySet().iterator(); iter.hasNext();) {
-			String name = (String) iter.next();
-			String[] values = (String[]) requestParams.get(name);
+			String name = iter.next();
+			String[] values = requestParams.get(name);
 			String valueStr = "";
 			for (int i = 0; i < values.length; i++) {
 				valueStr = (i == values.length - 1) ? valueStr + values[i]
 						: valueStr + values[i] + ",";
 			}
 			//乱码解决，这段代码在出现乱码时使用
-//			valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
+			//valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
 			params.put(name, valueStr);
 		}
 
-		boolean signVerified = AlipaySignature.rsaCheckV1(params,
-														aliPayResource.getAlipayPublicKey(),
-														aliPayResource.getCharset(),
-														aliPayResource.getSignType()); //调用SDK验证签名
+		boolean signVerified = AlipaySignature.rsaCheckV1(params, aliPayResource.getAlipayPublicKey(), aliPayResource.getCharset(), aliPayResource.getSignType()); //调用SDK验证签名
 
 		if(signVerified) {//验证成功
 			// 商户订单号
@@ -152,8 +149,6 @@ public class NotifyController {
 			log.info("* 支付宝交易号: {}", trade_no);
 			log.info("* 实付金额: {}", total_amount);
 			log.info("* 交易状态: {}", trade_status);
-			log.info("*****************************************************************************");
-
 			return "success";
 		}else {
 			//验证失败
@@ -171,12 +166,6 @@ public class NotifyController {
 		String httpStatus = restTemplate.postForObject(merchantReturnUrl, requestEntity, String.class);
 		System.out.println("*** 通知天天吃货后返回的状态码 httpStatus: " + httpStatus + " ***");
 		log.info("*** 通知天天吃货后返回的状态码 httpStatus: {} ***", httpStatus);
-	}
-
-	@GetMapping("ttt")
-	public YSDRZPJSONResult test() {
-		paymentOrderService.updateOrderPaid("190718FW17BFP8SW", 1001);
-		return YSDRZPJSONResult.ok();
 	}
 
 }
